@@ -1,33 +1,18 @@
 import { CreateNoteData, Note } from "@/types/note";
 import api from "./api";
 import type { AuthRequestData, User } from "@/types/user";
+import { FetchNotesParams, FetchNotesResponse } from "@/types/api";
 
-export interface FetchNotesParams {
-  page?: number;
-  perPage?: number;
-  search?: string;
-  tag?: string;
-}
 
-export interface FetchNotesResponse {
-  notes: Note[];
-  totalPages: number;
-}
-
-export interface NoteResponse {
-  note: Note;
-}
 // --- User & Auth ---
-// ВИПРАВЛЕНО: шлях змінено на /auth/register
 export const signUp = (data: AuthRequestData) =>
   api.post("/auth/register", data);
 
-export const signIn = (data: AuthRequestData) =>
-  api.post("/auth/sign-in", data);
-export const signOut = () => api.post("/auth/sign-out");
+export const signIn = (data: AuthRequestData) => api.post("/auth/login", data);
+export const signOut = () => api.post("/auth/logout");
 export const refreshSession = () => api.get<User>("/auth/session");
 export const updateUser = (data: Partial<User>) =>
-  api.patch<User>("/users/me", data);
+  api.patch<User>("/user/me", data);
 
 // --- Notes (for Client Components) ---
 export const fetchNotes = async (

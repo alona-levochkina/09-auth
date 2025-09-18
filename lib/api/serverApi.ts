@@ -1,8 +1,8 @@
 import api from "./api";
 import { cookies } from "next/headers";
 import type { User } from "@/types/user";
-import { FetchNotesParams, FetchNotesResponse } from "../api";
 import { Note } from "@/types/note";
+import { FetchNotesParams, FetchNotesResponse } from "@/types/api";
 
 // --- User ---
 export const getCurrentUser = async (): Promise<User | null> => {

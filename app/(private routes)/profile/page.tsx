@@ -2,7 +2,7 @@ import { getCurrentUser } from '@/lib/api/serverApi';
 import Image from 'next/image';
 import Link from 'next/link';
 import { redirect } from 'next/navigation';
-import css from './Profile.module.css';
+import css from './ProfilePage.module.css';
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
