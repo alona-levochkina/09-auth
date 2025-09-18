@@ -8,7 +8,7 @@ import { refreshSession } from '@/lib/api/clientApi';
 const privateRoutes = ['/profile', '/notes'];
 
 export default function AuthProvider({ children }: { children: React.ReactNode }) {
-  const { user, setUser, clearAuth } = useAuthStore();
+  const { setUser, clearAuth } = useAuthStore();
   const [isLoading, setIsLoading] = useState(true);
   const pathname = usePathname();
   const router = useRouter();
@@ -16,8 +16,8 @@ export default function AuthProvider({ children }: { children: React.ReactNode }
   useEffect(() => {
     const checkAuth = async () => {
       try {
-        const response = await refreshSession();
-        setUser(response.data);
+          const response = await refreshSession(); 
+        setUser(response.data); 
       } catch (error) {
         setUser(null);
         if (privateRoutes.some(route => pathname.startsWith(route))) {

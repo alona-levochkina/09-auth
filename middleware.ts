@@ -5,7 +5,7 @@ const privateRoutes = ["/profile", "/notes"];
 const authRoutes = ["/sign-in", "/sign-up"];
 
 export function middleware(request: NextRequest) {
-  const sessionToken = request.cookies.get("session_token")?.value;
+  const accessToken = request.cookies.get("accessToken")?.value;
   const { pathname } = request.nextUrl;
 
   const isPrivateRoute = privateRoutes.some((route) =>
@@ -13,11 +13,11 @@ export function middleware(request: NextRequest) {
   );
   const isAuthRoute = authRoutes.includes(pathname);
 
-  if (!sessionToken && isPrivateRoute) {
+  if (!accessToken && isPrivateRoute) {
     return NextResponse.redirect(new URL("/sign-in", request.url));
   }
 
-  if (sessionToken && isAuthRoute) {
+  if (accessToken && isAuthRoute) {
     return NextResponse.redirect(new URL("/profile", request.url));
   }
 

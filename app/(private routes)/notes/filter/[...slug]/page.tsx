@@ -1,4 +1,4 @@
-import { fetchNotes } from '@/lib/api';
+import { fetchNotesOnServer } from '@/lib/api/serverApi';
 import {
   dehydrate,
   HydrationBoundary,
@@ -40,7 +40,7 @@ export default async function FilteredNotesPage({ params }: FilteredNotesPagePro
 
   await queryClient.prefetchQuery({
     queryKey: ['notes', category, 1],
-    queryFn: () => fetchNotes({ page: 1, tag: category }),
+    queryFn: () => fetchNotesOnServer({ page: 1, tag: category }),
   });
 
   return (

@@ -1,4 +1,4 @@
-import { fetchNoteById } from "@/lib/api";
+import { fetchNoteByIdOnServer } from "@/lib/api/serverApi";
 import { dehydrate, HydrationBoundary, QueryClient } from "@tanstack/react-query";
 import NoteDetailsClient from './NoteDetails.client'
 import { Metadata } from "next";
@@ -12,7 +12,7 @@ const siteUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000';
 export async function generateMetadata({ params }: NoteDetailsProps): Promise<Metadata> {
     const { id } = await params;
 
-    const note = await fetchNoteById(id);
+    const note = await fetchNoteByIdOnServer(id);
     const title = `${note.title} | NoteHub`;
     const description = note.content.substring(0, 155) + '...';
     const url = `${siteUrl}/notes/${id}`; 
@@ -34,7 +34,7 @@ export default async function NoteDetailsPage({ params }: NoteDetailsProps) {
     const queryClient = new QueryClient();
         await queryClient.prefetchQuery({
             queryKey: ['note', id],
-            queryFn: () => fetchNoteById(id),
+            queryFn: () => fetchNoteByIdOnServer(id),
         })
 
     return (
