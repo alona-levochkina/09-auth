@@ -7,7 +7,7 @@ interface NoteDetailsProps {
     params: Promise<{ id: string }>;
 }
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000';
+const siteUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000';
 
 export async function generateMetadata({ params }: NoteDetailsProps): Promise<Metadata> {
     const { id } = await params;

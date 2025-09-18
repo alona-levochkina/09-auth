@@ -11,7 +11,7 @@ type FilteredNotesPageProps = {
   params: Promise<{ slug: string[] }>;
 };
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000';
+const siteUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000';
 
 export async function generateMetadata({ params }: FilteredNotesPageProps): Promise<Metadata> {
   const { slug } = await params;
