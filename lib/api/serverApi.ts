@@ -3,6 +3,7 @@ import type { User } from "@/types/user";
 import { Note } from "@/types/note";
 import { FetchNotesParams, FetchNotesResponse } from "@/types/api";
 import { cookies } from "next/headers";
+import { AxiosResponse } from "axios";
 
 // --- User ---
 export const getCurrentUser = async (): Promise<User | null> => {
@@ -19,6 +20,14 @@ export const getCurrentUser = async (): Promise<User | null> => {
 
     return null;
   }
+};
+
+export const checkSession = (cookie: string): Promise<AxiosResponse> => {
+  return api.get("auth/session", {
+    headers: {
+      Cookie: cookie,
+    },
+  });
 };
 
 // --- Notes (for Server Components) ---

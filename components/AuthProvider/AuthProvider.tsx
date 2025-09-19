@@ -19,8 +19,8 @@ export default function AuthProvider({ children }: { children: React.ReactNode }
         
         await refreshSession();
         
-        const response = await getMe();
-        setUser(response.data);
+        const res = await getMe();
+        setUser(res);
       } catch (error) {
         console.log(error);
         

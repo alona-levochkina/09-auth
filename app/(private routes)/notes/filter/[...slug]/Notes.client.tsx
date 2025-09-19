@@ -56,7 +56,7 @@ export default function NotesPage({ tag }: NotesClientProps) {
             onPageChange={handlePageChange}
           />
         )}
-        <Link href='/notes/actions/create' className={css.button}>Create note +</Link>
+        <Link href='/notes/action/create' className={css.button}>Create note +</Link>
       </header>
 
       {notesData && notesData.notes.length > 0 && (

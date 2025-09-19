@@ -2,8 +2,18 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   images: {
-    domains: ["picsum.photos", "ac.goit.global"],
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "ac.goit.global",
+      },
+      {
+        protocol: "https",
+        hostname: "picsum.photos",
+      },
+    ],
   },
+
   async headers() {
     return [
       {

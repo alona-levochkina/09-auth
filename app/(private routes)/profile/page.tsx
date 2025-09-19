@@ -5,8 +5,6 @@ import { redirect } from 'next/navigation';
 import css from './ProfilePage.module.css';
 import { Metadata } from 'next';
 
-export const dynamic = 'force-dynamic';
-
 export const metadata: Metadata = {
   title: 'My Profile | NoteHub',
   description: 'View and manage your user profile.',
@@ -34,6 +32,7 @@ export default async function ProfilePage() {
             width={120}
             height={120}
             className={css.avatar}
+            priority
           />
         </div>
         <div className={css.profileInfo}>

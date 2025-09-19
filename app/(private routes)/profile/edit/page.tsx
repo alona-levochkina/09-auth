@@ -22,7 +22,7 @@ export default function EditProfilePage() {
     event.preventDefault();
     try {
       const response = await updateUser({ username });
-      setUser(response.data);
+      setUser(response);
       router.push('/profile');
     } catch (error) {
       console.error('Failed to update profile:', error);
@@ -43,6 +43,7 @@ export default function EditProfilePage() {
           width={120}
           height={120}
           className={css.avatar}
+          priority
         />
         <form onSubmit={handleSubmit} className={css.profileInfo}>
           <div className={css.usernameWrapper}>

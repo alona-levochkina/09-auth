@@ -1,20 +1,42 @@
+// middleware.ts
+
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
+import { cookies } from "next/headers";
+import { checkSession } from "./lib/api/serverApi";
 
 const privateRoutes = ["/profile", "/notes"];
 const authRoutes = ["/sign-in", "/sign-up"];
 
-export function middleware(request: NextRequest) {
-  const accessToken = request.cookies.get("accessToken")?.value;
-  const { pathname } = request.nextUrl;
+export async function middleware(request: NextRequest) {
+  const cookieStore = await cookies();
 
+  const accessToken = cookieStore.get("accessToken")?.value;
+  const refreshToken = cookieStore.get("refreshToken")?.value;
+
+  const { pathname } = request.nextUrl;
   const isPrivateRoute = privateRoutes.some((route) =>
     pathname.startsWith(route)
   );
   const isAuthRoute = authRoutes.includes(pathname);
 
   if (!accessToken && isPrivateRoute) {
-    return NextResponse.redirect(new URL("/sign-in", request.url));
+    if (refreshToken) {
+      try {
+        const res = await checkSession(cookieStore.toString());
+        const setCookie = res.headers["set-cookie"];
+
+        if (setCookie) {
+          const response = NextResponse.next();
+          response.headers.set("set-cookie", setCookie.toString());
+          return response;
+        }
+      } catch (error) {
+        return NextResponse.redirect(new URL("/sign-in", request.url));
+      }
+    } else {
+      return NextResponse.redirect(new URL("/sign-in", request.url));
+    }
   }
 
   if (accessToken && isAuthRoute) {
@@ -25,5 +47,5 @@ export function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/((?!api|_next/static|_next/image|favicon.ico).*)"],
+  matcher: ["/profile/:path*", "/notes/:path*", "/sign-in", "/sign-up"],
 };
