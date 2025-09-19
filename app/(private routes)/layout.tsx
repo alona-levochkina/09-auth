@@ -1,4 +1,4 @@
-import AuthProvider from "@/components/AuthProvider.tsx/AuthProvider";
+import AuthProvider from "@/components/AuthProvider/AuthProvider";
 
 export default function PrivateLayout({
   children,
