@@ -31,7 +31,7 @@ export default function AuthProvider({ children }: { children: React.ReactNode }
     };
 
     checkAuth();
-     }, []); 
+     }, [setUser, clearAuth]); 
   
   useEffect(() => {
         if (isLoading) {
