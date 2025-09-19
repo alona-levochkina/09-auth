@@ -5,9 +5,10 @@ import { FetchNotesParams, FetchNotesResponse } from "@/types/api";
 
 // --- User & Auth ---
 export const signUp = (data: AuthRequestData) =>
-  api.post("/auth/register", data);
+  api.post<User>("/auth/register", data).then((res) => res.data);
 
-export const signIn = (data: AuthRequestData) => api.post("/auth/login", data);
+export const signIn = (data: AuthRequestData) =>
+  api.post<User>("/auth/login", data).then((res) => res.data);
 
 export const signOut = () => api.post("/auth/logout");
 

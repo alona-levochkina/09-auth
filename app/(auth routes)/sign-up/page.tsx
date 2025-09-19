@@ -5,11 +5,13 @@ import { useRouter } from "next/navigation";
 import { signUp } from "@/lib/api/clientApi";
 import css from "./SignUpPage.module.css";
 import { AxiosError } from "axios";
+import { useAuthStore } from "@/lib/store/authStore";
 
 export default function SignUpPage() {
   const router = useRouter();
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const setUser = useAuthStore((state) => state.setUser);
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -18,15 +20,21 @@ export default function SignUpPage() {
 
     try {
       const formData = new FormData(event.currentTarget);
-
       const email = formData.get("email") as string;
       const password = formData.get("password") as string;
 
-      await signUp({ email, password });
+      const user = await signUp({ email, password });
+
+      setUser(user);
+
       router.push("/profile");
     } catch (err) {
       if (err instanceof AxiosError) {
-        setError(err.response?.data?.message || "Failed to register");
+        if (err.response?.status === 409) {
+          setError("A user with this email already exists.");
+        } else {
+          setError(err.response?.data?.message || "Failed to register. Please try again.");
+        }
       } else {
         setError("An unexpected error occurred.");
       }
@@ -70,7 +78,7 @@ export default function SignUpPage() {
             {isLoading ? "Registering..." : "Register"}
           </button>
         </div>
-        <p className={css.error}>{error}</p>
+        {error && <p className={css.error}>{error}</p>}
       </form>
     </main>
   );

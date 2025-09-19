@@ -5,24 +5,26 @@ import { useRouter } from 'next/navigation';
 import { signIn } from '@/lib/api/clientApi';
 import css from './SignInPage.module.css';
 import { AxiosError } from 'axios';
+import { useAuthStore } from '@/lib/store/authStore'; 
 
 export default function SignInPage() {
   const router = useRouter();
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-
+  const setUser = useAuthStore((state) => state.setUser); 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault(); 
+    event.preventDefault();
     setError('');
     setIsLoading(true);
 
     try {
       const formData = new FormData(event.currentTarget);
-      
       const email = formData.get('email') as string;
       const password = formData.get('password') as string;
 
-      await signIn({ email, password });
+      const user = await signIn({ email, password });
+      
+      setUser(user);
 
       router.push('/profile');
     } catch (err) {
@@ -53,7 +55,7 @@ export default function SignInPage() {
             {isLoading ? 'Logging in...' : 'Log in'}
           </button>
         </div>
-        <p className={css.error}>{error}</p>
+        {error && <p className={css.error}>{error}</p>}
       </form>
     </main>
   );
