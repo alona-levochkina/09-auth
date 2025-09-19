@@ -12,7 +12,12 @@ export async function GET() {
     const refreshToken = cookieStore.get("refreshToken")?.value;
 
     if (accessToken) {
-      return NextResponse.json({ success: true });
+      const { data } = await api.get("/users/me", {
+        headers: {
+          Cookie: cookieStore.toString(),
+        },
+      });
+      return NextResponse.json(data);
     }
 
     if (refreshToken) {
@@ -40,16 +45,21 @@ export async function GET() {
           if (parsed.refreshToken)
             cookieStore.set("refreshToken", parsed.refreshToken, options);
         }
-        return NextResponse.json({ success: true }, { status: 200 });
+        const { data } = await api.get("/users/me", {
+          headers: {
+            Cookie: cookieStore.toString(),
+          },
+        });
+        return NextResponse.json(data);
       }
     }
-    return NextResponse.json({ success: false }, { status: 200 });
+    return NextResponse.json({ success: false }, { status: 401 });
   } catch (error) {
     if (isAxiosError(error)) {
       logErrorResponse(error.response?.data);
-      return NextResponse.json({ success: false }, { status: 200 });
+      return NextResponse.json({ success: false }, { status: 401 });
     }
     logErrorResponse({ message: (error as Error).message });
-    return NextResponse.json({ success: false }, { status: 200 });
+    return NextResponse.json({ success: false }, { status: 500 });
   }
 }

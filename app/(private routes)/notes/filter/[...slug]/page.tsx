@@ -1,4 +1,3 @@
-import { fetchNotesOnServer } from '@/lib/api/serverApi';
 import {
   dehydrate,
   HydrationBoundary,
@@ -6,6 +5,8 @@ import {
 } from '@tanstack/react-query';
 import NotesClient from './Notes.client';
 import { Metadata } from 'next';
+import { fetchNotesOnServer } from '@/lib/api/serverApi';
+
 
 type FilteredNotesPageProps = {
   params: Promise<{ slug: string[] }>;

@@ -1,13 +1,13 @@
 import api from "./api";
-import { cookies } from "next/headers";
 import type { User } from "@/types/user";
 import { Note } from "@/types/note";
 import { FetchNotesParams, FetchNotesResponse } from "@/types/api";
+import { cookies } from "next/headers";
 
 // --- User ---
 export const getCurrentUser = async (): Promise<User | null> => {
   try {
-    const cookieStore = cookies();
+    const cookieStore = await cookies();
     const { data } = await api.get<User>("/users/me", {
       headers: {
         Cookie: cookieStore.toString(),
@@ -15,6 +15,8 @@ export const getCurrentUser = async (): Promise<User | null> => {
     });
     return data;
   } catch (error) {
+    console.log(error);
+
     return null;
   }
 };
@@ -23,7 +25,7 @@ export const getCurrentUser = async (): Promise<User | null> => {
 export const fetchNotesOnServer = async (
   params: FetchNotesParams = {}
 ): Promise<FetchNotesResponse> => {
-  const cookieStore = cookies();
+  const cookieStore = await cookies();
   const { data } = await api.get("/notes", {
     params,
     headers: {
@@ -34,7 +36,7 @@ export const fetchNotesOnServer = async (
 };
 
 export const fetchNoteByIdOnServer = async (id: string): Promise<Note> => {
-  const cookieStore = cookies();
+  const cookieStore = await cookies();
   const { data } = await api.get<Note>(`/notes/${id}`, {
     headers: {
       Cookie: cookieStore.toString(),

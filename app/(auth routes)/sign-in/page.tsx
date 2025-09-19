@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { signIn } from '@/lib/api/clientApi';
-import css from './SignInPage.module.css'; // Переконайтесь, що у вас є цей файл стилів
+import css from './SignInPage.module.css';
 import { AxiosError } from 'axios';
 
 export default function SignInPage() {
